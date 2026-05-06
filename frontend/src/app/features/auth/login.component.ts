@@ -11,11 +11,11 @@ import { ApiService } from '../../core/api.service';
   template: `
     <section class="auth-screen">
       <div class="auth-copy">
-        <p class="eyebrow">Taskometer</p>
-        <h1>Project Management Platform</h1>
+        <p class="eyebrow">Project Management Platform</p>
+        <h1>Taskometer</h1>
         <p>A modern microservices-based project management platform for teams to organize projects, track tasks, and collaborate efficiently.</p>
         <div class="auth-proof">
-          <span>lets get started</span>
+          <span>lets get started, add a name, email and a password and click "create account" as u are a new user</span>
         </div>
       </div>
 
