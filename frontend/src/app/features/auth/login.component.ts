@@ -11,11 +11,11 @@ import { ApiService } from '../../core/api.service';
   template: `
     <section class="auth-screen">
       <div class="auth-copy">
-        <p class="eyebrow">Docker-first MEAN stack</p>
-        <h1>Project Platform</h1>
-        <p>project management</p>
+        <p class="eyebrow">Taskometer</p>
+        <h1>Project Management Platform</h1>
+        <p>A modern microservices-based project management platform for teams to organize projects, track tasks, and collaborate efficiently.</p>
         <div class="auth-proof">
-          <span>Angular</span>
+          <span>lets get started</span>
         </div>
       </div>
 
@@ -43,7 +43,6 @@ import { ApiService } from '../../core/api.service';
           <button type="submit">Sign in</button>
           <button type="button" class="secondary" (click)="register()">Create account</button>
         </div>
-        <p class="form-note">Use the test account after the backend services are running.</p>
       </form>
     </section>
   `
