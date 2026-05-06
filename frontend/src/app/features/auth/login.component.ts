@@ -13,12 +13,9 @@ import { ApiService } from '../../core/api.service';
       <div class="auth-copy">
         <p class="eyebrow">Docker-first MEAN stack</p>
         <h1>Project Platform</h1>
-        <p>Portfolio-ready project management with Angular, Express services, MongoDB, JWT auth, CI, and a seeded reviewer account.</p>
+        <p>project management</p>
         <div class="auth-proof">
           <span>Angular</span>
-          <span>Express</span>
-          <span>MongoDB</span>
-          <span>Docker</span>
         </div>
       </div>
 
