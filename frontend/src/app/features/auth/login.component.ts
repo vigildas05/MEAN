@@ -9,9 +9,23 @@ import { ApiService } from '../../core/api.service';
   imports: [FormsModule],
   template: `
     <section class="auth-screen">
-      <form class="auth-panel" (ngSubmit)="submit()">
-        <p class="eyebrow">MEAN Microservices</p>
+      <div class="auth-copy">
+        <p class="eyebrow">Docker-first MEAN stack</p>
         <h1>Project Platform</h1>
+        <p>Portfolio-ready project management with Angular, Express services, MongoDB, JWT auth, CI, and a clickable browser demo.</p>
+        <div class="auth-proof">
+          <span>Angular</span>
+          <span>Express</span>
+          <span>MongoDB</span>
+          <span>Docker</span>
+        </div>
+      </div>
+
+      <form class="auth-panel" (ngSubmit)="submit()">
+        <div>
+          <p class="eyebrow">Welcome back</p>
+          <h2>Sign in to your workspace</h2>
+        </div>
         <label>
           Name
           <input name="name" [(ngModel)]="name" autocomplete="name" />
@@ -31,7 +45,7 @@ import { ApiService } from '../../core/api.service';
           <button type="submit">Sign in</button>
           <button type="button" class="secondary" (click)="register()">Create account</button>
         </div>
-        <button type="button" class="secondary wide" (click)="previewDemo()">Preview demo</button>
+        <button type="button" class="secondary wide preview" (click)="previewDemo()">Preview demo</button>
       </form>
     </section>
   `

@@ -45,3 +45,36 @@ docker compose up --build
 ## CI/CD
 
 The included GitHub Actions workflow installs dependencies, builds every workspace package, and runs available tests on pull requests and pushes to `main`.
+
+## Deployment Notes
+
+### Docker
+
+Install Docker Desktop, start it, then run:
+
+```bash
+docker compose up --build
+```
+
+The services will be available at:
+
+- Frontend: `http://localhost:4200`
+- Auth service: `http://localhost:4001`
+- Task service: `http://localhost:4002`
+- User service: `http://localhost:4003`
+- MongoDB: `mongodb://localhost:27017/project_platform`
+
+### MongoDB Atlas
+
+For a cloud database, create a MongoDB Atlas cluster, add a database user, allow your deployment platform's network access, and set:
+
+```bash
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster-url>/project_platform
+JWT_SECRET=<long-random-secret>
+```
+
+### Vercel
+
+Vercel is best for the Angular frontend preview. Import this GitHub repo in Vercel and keep the repo root as the project root. The included `vercel.json` sets the build command and output directory.
+
+The browser demo works on Vercel without backend services. For real login/API features, deploy the Express services separately on Render, Railway, Fly.io, or another Node-friendly host, then point the Angular app at those service URLs.

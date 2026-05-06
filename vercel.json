@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build -w @platform/shared && npm run build -w frontend",
+  "outputDirectory": "frontend/dist/frontend/browser",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

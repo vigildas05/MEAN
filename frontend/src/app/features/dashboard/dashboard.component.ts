@@ -82,9 +82,12 @@ const demoTasks: LocalTask[] = [
   template: `
     <section class="workspace">
       <aside class="sidebar">
-        <div>
-          <p class="eyebrow">Project Platform</p>
-          <h1>Delivery Board</h1>
+        <div class="brand-block">
+          <div class="brand-mark">P</div>
+          <div>
+            <p class="eyebrow">Project Platform</p>
+            <h1>Delivery Board</h1>
+          </div>
         </div>
         <nav>
           <button class="active">Board</button>
@@ -101,6 +104,9 @@ const demoTasks: LocalTask[] = [
             <h2>Plan, assign, review, and ship work</h2>
           </div>
           <div class="toolbar-actions">
+            @if (demoMode) {
+              <span class="demo-pill">Demo mode</span>
+            }
             <input placeholder="Search tasks" [(ngModel)]="search" (input)="loadTasks()" />
             <button (click)="seedDemo()">Seed demo</button>
           </div>
@@ -110,18 +116,22 @@ const demoTasks: LocalTask[] = [
           <article>
             <span>Total projects</span>
             <strong>{{ projects().length }}</strong>
+            <small>Active workspaces</small>
           </article>
           <article>
             <span>Total tasks</span>
             <strong>{{ tasks().length }}</strong>
+            <small>Across all stages</small>
           </article>
           <article>
             <span>In review</span>
             <strong>{{ countByStatus('review') }}</strong>
+            <small>Ready for feedback</small>
           </article>
           <article>
             <span>Done</span>
             <strong>{{ countByStatus('done') }}</strong>
+            <small>Recently shipped</small>
           </article>
         </section>
 
@@ -143,7 +153,7 @@ const demoTasks: LocalTask[] = [
 
         <section class="board">
           @for (status of statuses; track status) {
-            <article class="column">
+            <article class="column {{ status }}">
               <header>
                 <h3>{{ statusLabels[status] }}</h3>
                 <span>{{ grouped()[status].length }}</span>
@@ -156,6 +166,7 @@ const demoTasks: LocalTask[] = [
                   </div>
                   <div class="task-meta">
                     <span class="priority">{{ task.priority }}</span>
+                    <span class="comment-count">{{ task.comments.length }} comments</span>
                     <select [ngModel]="task.status" (ngModelChange)="moveTask(task, $event)">
                       @for (target of statuses; track target) {
                         <option [value]="target">{{ statusLabels[target] }}</option>
