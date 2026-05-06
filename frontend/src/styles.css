@@ -211,6 +211,10 @@ select {
   grid-template-columns: 1fr 1fr;
 }
 
+.wide {
+  width: 100%;
+}
+
 .error {
   color: #b42318;
   margin: 0;

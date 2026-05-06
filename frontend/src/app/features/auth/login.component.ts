@@ -31,6 +31,7 @@ import { ApiService } from '../../core/api.service';
           <button type="submit">Sign in</button>
           <button type="button" class="secondary" (click)="register()">Create account</button>
         </div>
+        <button type="button" class="secondary wide" (click)="previewDemo()">Preview demo</button>
       </form>
     </section>
   `
@@ -48,6 +49,7 @@ export class LoginComponent {
     this.api.login(this.email, this.password).subscribe({
       next: ({ token }) => {
         localStorage.setItem('token', token);
+        localStorage.removeItem('demoMode');
         this.router.navigateByUrl('/');
       },
       error: () => this.error.set('Login failed. Create the account first or check your credentials.')
@@ -58,9 +60,16 @@ export class LoginComponent {
     this.api.register(this.name || 'Demo User', this.email, this.password).subscribe({
       next: ({ token }) => {
         localStorage.setItem('token', token);
+        localStorage.removeItem('demoMode');
         this.router.navigateByUrl('/');
       },
       error: () => this.error.set('Account creation failed. Try another email.')
     });
+  }
+
+  previewDemo() {
+    localStorage.setItem('token', 'demo-preview-token');
+    localStorage.setItem('demoMode', 'true');
+    this.router.navigateByUrl('/');
   }
 }
