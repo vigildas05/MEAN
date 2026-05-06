@@ -22,7 +22,7 @@ type ApiTask = ProjectTask & { _id?: string };
     <section class="workspace">
       <aside class="sidebar">
         <div class="brand-block">
-          <div class="brand-mark">T</div>
+          <div class="brand-mark">TM</div>
           <div>
             <p class="eyebrow">Project Platform</p>
             <h1>Delivery Board</h1>
