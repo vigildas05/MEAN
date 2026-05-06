@@ -1,0 +1,22 @@
+{
+  "name": "mean-microservices-project-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "services/*",
+    "shared"
+  ],
+  "scripts": {
+    "build": "npm run build -w @platform/shared && npm run build -w @platform/auth-service && npm run build -w @platform/task-service && npm run build -w @platform/user-service && npm run build -w frontend",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "dev:auth": "npm run dev -w @platform/auth-service",
+    "dev:tasks": "npm run dev -w @platform/task-service",
+    "dev:users": "npm run dev -w @platform/user-service",
+    "dev:frontend": "npm start -w frontend"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "ng serve --host 0.0.0.0 --port 4200",
+    "build": "ng build",
+    "test": "ng test --watch=false --browsers=ChromeHeadless"
+  },
+  "dependencies": {
+    "@angular/animations": "^19.2.10",
+    "@angular/common": "^19.2.10",
+    "@angular/compiler": "^19.2.10",
+    "@angular/core": "^19.2.10",
+    "@angular/forms": "^19.2.10",
+    "@angular/platform-browser": "^19.2.10",
+    "@angular/platform-browser-dynamic": "^19.2.10",
+    "@angular/router": "^19.2.10",
+    "@platform/shared": "0.1.0",
+    "lucide-angular": "^0.511.0",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.8.1",
+    "zone.js": "^0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^19.2.11",
+    "@angular/cli": "^19.2.11",
+    "@angular/compiler-cli": "^19.2.10",
+    "@types/jasmine": "^6.0.0",
+    "jasmine-core": "^6.2.0",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.2.0",
+    "typescript": "^5.8.3"
+  }
+}
