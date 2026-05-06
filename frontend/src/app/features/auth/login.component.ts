@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -59,6 +60,14 @@ export class LoginComponent {
   password = 'password123';
   error = signal('');
 
+  private getErrorMessage(error: unknown, fallback: string) {
+    if (error instanceof HttpErrorResponse && error.error?.message) {
+      return error.error.message;
+    }
+
+    return fallback;
+  }
+
   submit() {
     this.api.login(this.email, this.password).subscribe({
       next: ({ token }) => {
@@ -66,7 +75,7 @@ export class LoginComponent {
         localStorage.removeItem('demoMode');
         this.router.navigateByUrl('/');
       },
-      error: () => this.error.set('Login failed. Create the account first or check your credentials.')
+      error: (error) => this.error.set(this.getErrorMessage(error, 'Login failed. Create the account first or check your credentials.'))
     });
   }
 
@@ -77,7 +86,7 @@ export class LoginComponent {
         localStorage.removeItem('demoMode');
         this.router.navigateByUrl('/');
       },
-      error: () => this.error.set('Account creation failed. Try another email.')
+      error: (error) => this.error.set(this.getErrorMessage(error, 'Account creation failed. Try another email or a stronger password.'))
     });
   }
 }
