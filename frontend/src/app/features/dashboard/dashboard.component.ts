@@ -22,10 +22,11 @@ type ApiTask = ProjectTask & { _id?: string };
     <section class="workspace">
       <aside class="sidebar">
         <div class="brand-block">
-          <div class="brand-mark">P</div>
+          <div class="brand-mark">T</div>
           <div>
             <p class="eyebrow">Project Platform</p>
             <h1>Delivery Board</h1>
+            <p class="eyebrow">add projects and tasks to access "projects" and "reports" panel</p>
           </div>
         </div>
         <nav>
