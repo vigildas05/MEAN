@@ -1,33 +1,114 @@
-# MEAN Microservices Project Platform
+# Taskometer
 
-A Docker-ready MEAN stack project management platform aligned with modern UI, API-first, and microservices internship requirements.
+A Docker-ready MEAN stack microservices-based project management platform built with Angular, Node.js, Express, MongoDB, and JWT authentication.
 
-## Stack
+FlowForge is designed to demonstrate modern full-stack engineering practices including:
+- Microservices architecture
+- API-first backend development
+- JWT-based authentication
+- Docker containerization
+- CI/CD workflows
+- Modular TypeScript codebases
+- Scalable service separation
 
-- Angular + TypeScript frontend
-- Node.js + Express services
-- MongoDB with Mongoose
-- JWT authentication
-- Docker Compose for local orchestration
-- GitHub Actions for CI
+---
 
-## Services
+# Features
 
-- `frontend`: Angular task board and dashboard UI
-- `auth-service`: registration, login, JWT issuing
-- `task-service`: projects, tasks, comments, filters, board statistics
-- `user-service`: user profile lookup and updates
-- `shared`: shared TypeScript domain types
+## Authentication Service
+- User registration
+- Secure login
+- JWT token generation
+- Protected routes
 
-## Local Development
+## Task Management
+- Create and manage projects
+- Task boards and workflows
+- Comments and activity tracking
+- Filters and task statistics
 
-Install dependencies:
+## User Service
+- User profile lookup
+- Profile updates
+- User metadata management
+
+## Frontend Dashboard
+- Angular-based responsive UI
+- Task board visualization
+- Project analytics dashboard
+- API-integrated workflows
+
+---
+
+# Architecture
+
+```text
+Frontend (Angular)
+        │
+        ▼
+API Gateway / Vercel Functions
+        │
+ ┌───────────────┬───────────────┬───────────────┐
+ ▼               ▼               ▼
+Auth Service   Task Service   User Service
+        │
+        ▼
+     MongoDB
+```
+
+---
+
+# Tech Stack
+
+## Frontend
+- Angular
+- TypeScript
+- RxJS
+
+## Backend
+- Node.js
+- Express.js
+- JWT Authentication
+
+## Database
+- MongoDB
+- Mongoose
+
+## DevOps & Tooling
+- Docker
+- Docker Compose
+- GitHub Actions
+- Vercel
+
+---
+
+# Monorepo Structure
+
+```bash
+.
+├── frontend/
+├── auth-service/
+├── task-service/
+├── user-service/
+├── shared/
+├── docker-compose.yml
+├── vercel.json
+└── .github/workflows/
+```
+
+---
+
+# Local Development
+
+## Install Dependencies
 
 ```bash
 npm install
 ```
 
-Run services locally in separate terminals:
+## Run Services Individually
+
+Open separate terminals:
 
 ```bash
 npm run dev:auth
@@ -36,52 +117,128 @@ npm run dev:users
 npm run dev:frontend
 ```
 
-Or run the full stack with Docker:
+---
+
+# Docker Setup
+
+## Run Entire Stack
 
 ```bash
 docker compose up --build
 ```
 
-## CI/CD
+## Services
 
-The included GitHub Actions workflow installs dependencies, builds every workspace package, and runs available tests on pull requests and pushes to `main`.
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:4200 |
+| Auth Service | http://localhost:4001 |
+| Task Service | http://localhost:4002 |
+| User Service | http://localhost:4003 |
 
-## Deployment Notes
-
-### Docker
-
-Install Docker Desktop, start it, then run:
-
+MongoDB:
 ```bash
-docker compose up --build
+mongodb://localhost:27017/project_platform
 ```
 
-The services will be available at:
+---
 
-- Frontend: `http://localhost:4200`
-- Auth service: `http://localhost:4001`
-- Task service: `http://localhost:4002`
-- User service: `http://localhost:4003`
-- MongoDB: `mongodb://localhost:27017/project_platform`
+# Environment Variables
 
-### MongoDB Atlas
+Create a `.env` file in the appropriate services.
 
-For a cloud database, create a MongoDB Atlas cluster, add a database user, allow your deployment platform's network access, and set:
-
-```bash
-MONGODB_URI=mongodb+srv://<user>:<password>@<cluster-url>/project_platform
-JWT_SECRET=<long-random-secret>
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_long_random_secret
 ```
 
-### Vercel
+Example:
 
-Vercel can serve the Angular frontend and the lightweight `/api/*` serverless functions. Import this GitHub repo in Vercel and keep the repo root as the project root. The included `vercel.json` sets the build command and output directory.
-
-Set these Vercel environment variables before deploying:
-
-```bash
-MONGODB_URI=<your MongoDB Atlas URI>
-JWT_SECRET=<long-random-secret>
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/project_platform
+JWT_SECRET=8f3c1b9d4a7e2f6c8d1e5b7a9c3f2e6
 ```
 
-For a stricter microservices production deployment, deploy the Express services separately on Render, Railway, Fly.io, or another Node-friendly host. The Vercel functions are included so the portfolio demo can work from a single Vercel deployment.
+---
+
+# MongoDB Atlas Setup
+
+1. Create a MongoDB Atlas cluster
+2. Create a database user
+3. Add IP access:
+   ```text
+   0.0.0.0/0
+   ```
+4. Copy the Atlas connection URI
+5. Add it to environment variables
+
+---
+
+# CI/CD
+
+GitHub Actions workflow automatically:
+
+- Installs dependencies
+- Builds all services
+- Runs tests
+- Validates pull requests
+- Executes CI pipeline on pushes to `main`
+
+---
+
+# Deployment
+
+## Vercel Deployment
+
+The frontend and lightweight serverless APIs can be deployed directly on Vercel.
+
+### Steps
+
+1. Import repository into Vercel
+2. Keep repository root as project root
+3. Add environment variables:
+   ```env
+   MONGODB_URI=your_uri
+   JWT_SECRET=your_secret
+   ```
+4. Deploy
+
+---
+
+# Future Improvements
+
+- WebSocket real-time updates
+- Redis caching
+- Kubernetes deployment
+- Role-based access control
+- Notifications system
+- Activity feeds
+- File uploads
+- Team collaboration tools
+
+---
+
+# Learning Outcomes
+
+This project demonstrates understanding of:
+
+- Microservices architecture
+- REST API design
+- JWT authentication
+- Angular frontend integration
+- Docker orchestration
+- CI/CD automation
+- Cloud database deployment
+- Full-stack TypeScript development
+
+---
+
+# License
+
+MIT License
+
+---
+
+# Author
+
+Built by Vigil Das
