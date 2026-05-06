@@ -175,7 +175,6 @@ select:focus {
   gap: 10px;
 }
 
-.demo-pill,
 .priority,
 .comment-count,
 .auth-proof span {
@@ -184,11 +183,6 @@ select:focus {
   font-weight: 900;
   padding: 6px 10px;
   text-transform: uppercase;
-}
-
-.demo-pill {
-  background: #fff2df;
-  color: #94540c;
 }
 
 .metrics {
@@ -375,6 +369,12 @@ select:focus {
 
 .error {
   color: var(--danger);
+  margin: 0;
+}
+
+.form-note {
+  color: var(--muted);
+  font-size: 14px;
   margin: 0;
 }
 

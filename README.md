@@ -75,6 +75,13 @@ JWT_SECRET=<long-random-secret>
 
 ### Vercel
 
-Vercel is best for the Angular frontend preview. Import this GitHub repo in Vercel and keep the repo root as the project root. The included `vercel.json` sets the build command and output directory.
+Vercel can serve the Angular frontend and the lightweight `/api/*` serverless functions. Import this GitHub repo in Vercel and keep the repo root as the project root. The included `vercel.json` sets the build command and output directory.
 
-The browser demo works on Vercel without backend services. For real login/API features, deploy the Express services separately on Render, Railway, Fly.io, or another Node-friendly host, then point the Angular app at those service URLs.
+Set these Vercel environment variables before deploying:
+
+```bash
+MONGODB_URI=<your MongoDB Atlas URI>
+JWT_SECRET=<long-random-secret>
+```
+
+For a stricter microservices production deployment, deploy the Express services separately on Render, Railway, Fly.io, or another Node-friendly host. The Vercel functions are included so the portfolio demo can work from a single Vercel deployment.

@@ -12,7 +12,7 @@ import { ApiService } from '../../core/api.service';
       <div class="auth-copy">
         <p class="eyebrow">Docker-first MEAN stack</p>
         <h1>Project Platform</h1>
-        <p>Portfolio-ready project management with Angular, Express services, MongoDB, JWT auth, CI, and a clickable browser demo.</p>
+        <p>Portfolio-ready project management with Angular, Express services, MongoDB, JWT auth, CI, and a seeded reviewer account.</p>
         <div class="auth-proof">
           <span>Angular</span>
           <span>Express</span>
@@ -45,7 +45,7 @@ import { ApiService } from '../../core/api.service';
           <button type="submit">Sign in</button>
           <button type="button" class="secondary" (click)="register()">Create account</button>
         </div>
-        <button type="button" class="secondary wide preview" (click)="previewDemo()">Preview demo</button>
+        <p class="form-note">Use the test account after the backend services are running.</p>
       </form>
     </section>
   `
@@ -79,11 +79,5 @@ export class LoginComponent {
       },
       error: () => this.error.set('Account creation failed. Try another email.')
     });
-  }
-
-  previewDemo() {
-    localStorage.setItem('token', 'demo-preview-token');
-    localStorage.setItem('demoMode', 'true');
-    this.router.navigateByUrl('/');
   }
 }

@@ -11,69 +11,8 @@ const statusLabels: Record<ProjectTask['status'], string> = {
   done: 'Done'
 };
 
-type LocalProject = Project & { _id?: string };
-type LocalTask = ProjectTask & { _id?: string };
-
-const demoProjects: LocalProject[] = [
-  {
-    id: 'project-1',
-    name: 'Internship Portfolio Platform',
-    description: 'Docker-ready MEAN project for a modern UI developer role.',
-    ownerId: 'demo-user',
-    memberIds: ['demo-user'],
-    createdAt: new Date().toISOString()
-  }
-];
-
-const demoTasks: LocalTask[] = [
-  {
-    id: 'task-1',
-    projectId: 'project-1',
-    title: 'Build responsive Angular dashboard',
-    description: 'Create metrics, navigation, task board, and fast scanning layouts.',
-    status: 'done',
-    assigneeId: 'demo-user',
-    priority: 'high',
-    comments: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'task-2',
-    projectId: 'project-1',
-    title: 'Connect REST APIs',
-    description: 'Integrate auth, project, task, and user service endpoints.',
-    status: 'review',
-    assigneeId: 'demo-user',
-    priority: 'medium',
-    comments: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'task-3',
-    projectId: 'project-1',
-    title: 'Prepare Docker Compose stack',
-    description: 'Run Angular, Express services, and MongoDB as containers.',
-    status: 'in-progress',
-    assigneeId: 'demo-user',
-    priority: 'high',
-    comments: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'task-4',
-    projectId: 'project-1',
-    title: 'Add backend tests',
-    description: 'Cover validation, auth, and task status transitions.',
-    status: 'todo',
-    priority: 'medium',
-    comments: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+type ApiProject = Project & { _id?: string };
+type ApiTask = ProjectTask & { _id?: string };
 
 @Component({
   selector: 'app-dashboard',
@@ -104,11 +43,8 @@ const demoTasks: LocalTask[] = [
             <h2>Plan, assign, review, and ship work</h2>
           </div>
           <div class="toolbar-actions">
-            @if (demoMode) {
-              <span class="demo-pill">Demo mode</span>
-            }
             <input placeholder="Search tasks" [(ngModel)]="search" (input)="loadTasks()" />
-            <button (click)="seedDemo()">Seed demo</button>
+            <button (click)="loadAll()">Refresh</button>
           </div>
         </header>
 
@@ -194,18 +130,17 @@ export class DashboardComponent {
 
   statuses = taskStatuses;
   statusLabels = statusLabels;
-  projects = signal<LocalProject[]>([]);
-  tasks = signal<LocalTask[]>([]);
+  projects = signal<ApiProject[]>([]);
+  tasks = signal<ApiTask[]>([]);
   users = signal<UserProfile[]>([]);
   search = '';
   projectName = '';
   taskTitle = '';
   selectedProjectId = '';
   commentDrafts: Record<string, string> = {};
-  demoMode = localStorage.getItem('demoMode') === 'true';
 
   grouped = computed(() => {
-    const buckets: Record<ProjectTask['status'], LocalTask[]> = {
+    const buckets: Record<ProjectTask['status'], ApiTask[]> = {
       todo: [],
       'in-progress': [],
       review: [],
@@ -221,34 +156,7 @@ export class DashboardComponent {
       return;
     }
 
-    if (this.demoMode) {
-      this.loadDemo();
-      return;
-    }
     this.loadAll();
-  }
-
-  loadDemo() {
-    const storedProjects = localStorage.getItem('demoProjects');
-    const storedTasks = localStorage.getItem('demoTasks');
-    const projects = storedProjects ? JSON.parse(storedProjects) as LocalProject[] : demoProjects;
-    const tasks = storedTasks ? JSON.parse(storedTasks) as LocalTask[] : demoTasks;
-
-    this.projects.set(projects);
-    this.tasks.set(this.filterTasks(tasks));
-    this.selectedProjectId = this.selectedProjectId || projects[0]?.id || '';
-    this.persistDemo(projects, tasks);
-  }
-
-  persistDemo(projects = this.projects(), tasks = this.tasks()) {
-    localStorage.setItem('demoProjects', JSON.stringify(projects));
-    localStorage.setItem('demoTasks', JSON.stringify(tasks));
-  }
-
-  filterTasks(tasks: LocalTask[]) {
-    const query = this.search.trim().toLowerCase();
-    if (!query) return tasks;
-    return tasks.filter((task) => task.title.toLowerCase().includes(query) || task.description.toLowerCase().includes(query));
   }
 
   loadAll() {
@@ -261,11 +169,6 @@ export class DashboardComponent {
   }
 
   loadTasks() {
-    if (this.demoMode) {
-      const tasks = JSON.parse(localStorage.getItem('demoTasks') ?? JSON.stringify(demoTasks)) as LocalTask[];
-      this.tasks.set(this.filterTasks(tasks));
-      return;
-    }
     this.api.getTasks({ search: this.search }).subscribe((tasks) => this.tasks.set(tasks));
   }
 
@@ -274,25 +177,6 @@ export class DashboardComponent {
   }
 
   createProject() {
-    if (this.demoMode) {
-      const project: LocalProject = {
-        id: `project-${crypto.randomUUID()}`,
-        name: this.projectName,
-        description: 'Created from the Angular dashboard',
-        ownerId: 'demo-user',
-        memberIds: ['demo-user'],
-        createdAt: new Date().toISOString()
-      };
-      this.projects.update((projects) => {
-        const updated = [project, ...projects];
-        this.persistDemo(updated, this.tasks());
-        return updated;
-      });
-      this.selectedProjectId = project.id;
-      this.projectName = '';
-      return;
-    }
-
     this.api.createProject({ name: this.projectName, description: 'Created from the Angular dashboard' }).subscribe((project) => {
       this.projects.update((projects) => [project, ...projects]);
       this.selectedProjectId = project.id || (project as Project & { _id?: string })._id || '';
@@ -302,27 +186,6 @@ export class DashboardComponent {
 
   createTask() {
     if (!this.selectedProjectId) return;
-    if (this.demoMode) {
-      const task: LocalTask = {
-        id: `task-${crypto.randomUUID()}`,
-        projectId: this.selectedProjectId,
-        title: this.taskTitle,
-        description: 'Ready for assignment and review.',
-        status: 'todo',
-        priority: 'medium',
-        comments: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      this.tasks.update((tasks) => {
-        const updated = [task, ...tasks];
-        this.persistDemo(this.projects(), updated);
-        return updated;
-      });
-      this.taskTitle = '';
-      return;
-    }
-
     this.api
       .createTask({
         projectId: this.selectedProjectId,
@@ -337,66 +200,24 @@ export class DashboardComponent {
       });
   }
 
-  moveTask(task: LocalTask, status: ProjectTask['status']) {
-    if (this.demoMode) {
-      this.tasks.update((tasks) => {
-        const updated = tasks.map((item) => (item.id === task.id ? { ...item, status, updatedAt: new Date().toISOString() } : item));
-        this.persistDemo(this.projects(), updated);
-        return updated;
-      });
-      return;
-    }
-
+  moveTask(task: ApiTask, status: ProjectTask['status']) {
     this.api.updateTaskStatus(task.id || task._id!, status).subscribe((updated) => {
       this.tasks.update((tasks) => tasks.map((item) => (item.id === updated.id || item._id === (updated as ProjectTask & { _id?: string })._id ? updated : item)));
     });
   }
 
-  addComment(task: LocalTask) {
+  addComment(task: ApiTask) {
     const id = task.id || task._id!;
     const body = this.commentDrafts[id];
     if (!body) return;
-    if (this.demoMode) {
-      this.tasks.update((tasks) => {
-        const updated = tasks.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                comments: [
-                  ...item.comments,
-                  { id: `comment-${crypto.randomUUID()}`, taskId: id, authorId: 'demo-user', body, createdAt: new Date().toISOString() }
-                ]
-              }
-            : item
-        );
-        this.persistDemo(this.projects(), updated);
-        return updated;
-      });
-      this.commentDrafts[id] = '';
-      return;
-    }
-
     this.api.addComment(id, body).subscribe((updated) => {
       this.commentDrafts[id] = '';
       this.tasks.update((tasks) => tasks.map((item) => (item.id === updated.id || item._id === (updated as ProjectTask & { _id?: string })._id ? updated : item)));
     });
   }
 
-  seedDemo() {
-    if (this.demoMode) {
-      this.projects.set(demoProjects);
-      this.tasks.set(demoTasks);
-      this.persistDemo(demoProjects, demoTasks);
-      this.selectedProjectId = demoProjects[0].id;
-      return;
-    }
-    this.projectName = 'Internship Portfolio Platform';
-    this.createProject();
-  }
-
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('demoMode');
     this.router.navigateByUrl('/login');
   }
 }

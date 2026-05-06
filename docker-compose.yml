@@ -12,9 +12,9 @@ services:
       context: .
       dockerfile: services/auth-service/Dockerfile
     environment:
-      PORT: 4001
-      MONGODB_URI: mongodb://mongo:27017/project_platform
-      JWT_SECRET: change-me-in-production
+      PORT: ${AUTH_PORT:-4001}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/project_platform}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
       USER_SERVICE_URL: http://user-service:4003
     ports:
       - "4001:4001"
@@ -26,9 +26,9 @@ services:
       context: .
       dockerfile: services/task-service/Dockerfile
     environment:
-      PORT: 4002
-      MONGODB_URI: mongodb://mongo:27017/project_platform
-      JWT_SECRET: change-me-in-production
+      PORT: ${TASK_PORT:-4002}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/project_platform}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
     ports:
       - "4002:4002"
     depends_on:
@@ -39,9 +39,9 @@ services:
       context: .
       dockerfile: services/user-service/Dockerfile
     environment:
-      PORT: 4003
-      MONGODB_URI: mongodb://mongo:27017/project_platform
-      JWT_SECRET: change-me-in-production
+      PORT: ${USER_PORT:-4003}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/project_platform}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
     ports:
       - "4003:4003"
     depends_on:

@@ -3,10 +3,12 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoardStats, Project, ProjectTask, UserProfile } from '@platform/shared';
 
+const isLocalhost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
 const endpoints = {
-  auth: 'http://localhost:4001',
-  tasks: 'http://localhost:4002',
-  users: 'http://localhost:4003'
+  auth: isLocalhost ? 'http://localhost:4001/auth' : '/api/auth',
+  tasks: isLocalhost ? 'http://localhost:4002' : '/api',
+  users: isLocalhost ? 'http://localhost:4003' : '/api'
 };
 
 @Injectable({ providedIn: 'root' })
@@ -14,11 +16,11 @@ export class ApiService {
   private readonly http = inject(HttpClient);
 
   login(email: string, password: string): Observable<{ token: string; user: UserProfile }> {
-    return this.http.post<{ token: string; user: UserProfile }>(`${endpoints.auth}/auth/login`, { email, password });
+    return this.http.post<{ token: string; user: UserProfile }>(`${endpoints.auth}/login`, { email, password });
   }
 
   register(name: string, email: string, password: string): Observable<{ token: string; user: UserProfile }> {
-    return this.http.post<{ token: string; user: UserProfile }>(`${endpoints.auth}/auth/register`, {
+    return this.http.post<{ token: string; user: UserProfile }>(`${endpoints.auth}/register`, {
       name,
       email,
       password
